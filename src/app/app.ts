@@ -37,12 +37,18 @@ export class App {
   }
 
   // ✅ DELETE usando update + filter
-  removerTarefa(tarefaAserRemovida: Tarefa) {
-     var indice = this.arrayDeTarefas().indexOf(tarefaAserRemovida); 
-    var id = this.arrayDeTarefas()[indice]._id;                     
-    this.http.delete<Tarefa>(`${this.apiURL}/delete/${id}`).subscribe(
-      resultado => { console.log(resultado); this.READ_tarefas(); });
-  }
+removerTarefa(tarefa: Tarefa) {
+  this.http.delete<Tarefa>(`${this.apiURL}/delete/${tarefa._id}`)
+    .subscribe({
+      next: (resultado) => {
+        console.log("Tarefa removida:", resultado);
+        this.READ_tarefas(); // atualiza a lista
+      },
+      error: (erro) => {
+        console.error("Erro ao remover tarefa:", erro);
+      }
+    });
+}
 
   UPDATE_tarefa(tarefaAserModificada: Tarefa) {
     var indice = this.arrayDeTarefas().indexOf(tarefaAserModificada); 
