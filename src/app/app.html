@@ -12,7 +12,7 @@
     <li *ngFor="let tarefaDoLoop of arrayDeTarefas()">
       <app-item 
         [tarefa]="tarefaDoLoop"
-        (removeTarefa)="removerTarefa(tarefaDoLoop)"
+        (removeTarefa)="removerTarefa($event)"
         (modificaTarefa)="UPDATE_tarefa(tarefaDoLoop)">
       </app-item>
     </li>
