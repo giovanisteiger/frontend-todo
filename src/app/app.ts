@@ -21,6 +21,7 @@ export class App {
     this.READ_tarefas();
   }
 
+  // CREATE
   CREATE_tarefa(descricaoNovaTarefa: string) {
     const novaTarefa = new Tarefa(descricaoNovaTarefa, false);
 
@@ -31,21 +32,29 @@ export class App {
       });
   }
 
+  // READ
   READ_tarefas() {
     this.http.get<Tarefa[]>(`${this.apiURL}/getAll`)
       .subscribe(resultado => this.arrayDeTarefas.set(resultado));
   }
 
+  // DELETE
   removerTarefa(tarefa: Tarefa) {
     this.http.delete<Tarefa>(`${this.apiURL}/delete/${tarefa._id}`)
-      .subscribe(resultado => {
-        console.log(resultado);
-        this.READ_tarefas();
+      .subscribe({
+        next: (resultado) => {
+          console.log("Tarefa removida:", resultado);
+          this.READ_tarefas();
+        },
+        error: (erro) => {
+          console.error("Erro ao remover tarefa:", erro);
+        }
       });
   }
 
-  UPDATE_tarefa(tarefa: Tarefa) {
-    this.http.patch<Tarefa>(`${this.apiURL}/update/${tarefa._id}`, tarefa)
+  // UPDATE
+  UPDATE_tarefa(tarefaAserModificada: Tarefa) {
+    this.http.patch<Tarefa>(`${this.apiURL}/update/${tarefaAserModificada._id}`, tarefaAserModificada)
       .subscribe(resultado => {
         console.log(resultado);
         this.READ_tarefas();
